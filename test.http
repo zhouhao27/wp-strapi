@@ -1,0 +1,42 @@
+@protocol = http
+@hostname = localhost
+@port = 1337
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+@jwtToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg1NTE1MDI0LCJleHAiOjE2ODgxMDcwMjR9.0-_UZnfJxC7t2vp-R5ZprG-HCo0M1nMkdQ50DHa28bE
+
+### login
+POST {{protocol}}://{{host}}/api/auth/local HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "identifier": "tester1@mail.com",
+  "password": "123456"
+}
+
+### Create a order
+POST {{protocol}}://{{host}}/api/orders/ HTTP/1.1
+Authorization: {{jwtToken}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "products": [1]
+  }
+}
+
+### Confirm order
+POST {{protocol}}://{{host}}/api/orders/confirm/9 HTTP/1.1
+Authorization: {{jwtToken}}
+
+###
+GET {{protocol}}://{{host}}/api/orders
+
+### WP Webhook
+POST {{protocol}}://{{host}}/api/wp-webhook
+
+{
+  "data": {
+    "message": "hello"
+  }
+}
