@@ -14,11 +14,17 @@ module.exports = {
     }
   },
   verifyAction: async (ctx, next) => {
-    console.log(ctx.request.body)
-    try {
-      ctx.body = 'ok';
-    } catch (err) {
-      ctx.body = err;
+    console.log("verifyAction")
+    console.log(ctx.request.query)
+
+    // TODO: Put token in environment
+    if (
+      ctx.request.query['hub.mode'] == 'subscribe' &&
+      ctx.request.query['hub.verify_token'] == 'MY_TOKEN'
+    ) {
+      ctx.body = ctx.request.query['hub.challenge'];
+    } else {
+      ctx.body = 'Failed to verify webhook';
     }
   }
 };
